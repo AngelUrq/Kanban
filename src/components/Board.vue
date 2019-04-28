@@ -77,7 +77,7 @@ export default {
       this.task = ''
     },
     moveTask (from, to, index) {
-      if(!from[index].closed){
+      if (!from[index].closed) {
         to.push(from[index])
         from.splice(index, 1)
       }
