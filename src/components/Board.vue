@@ -12,7 +12,8 @@
         <h3>To-do</h3>
         <div v-for="(todoTask, index) in todo" class="alert alert-warning" :key="index" role="alert">
           <p>{{ todoTask.task }}</p>
-          <button class="btn btn-primary" @click="moveTask(todo, inProgress, index)">→</button>
+          <button class="btn btn-danger" @click="deleteTask(index, todo)">Delete</button>
+          <button class="btn btn-primary ml-5" @click="moveTask(todo, inProgress, index)">→</button>
         </div>
       </div>
       <div class="col-sm">
@@ -27,6 +28,7 @@
               <button class="btn btn-success" @click="moveTask(inProgress, validating, index)">→</button>
             </div>
           </div>
+          <button class="btn btn-danger" @click="deleteTask(index, inProgress)">Delete</button>
         </div>
       </div>
       <div class="col-sm">
@@ -41,6 +43,7 @@
               <button class="btn btn-primary" @click="moveTask(validating, finished, index)">→</button>
             </div>
           </div>
+          <button class="btn btn-danger" @click="deleteTask(index, validating)">Delete</button>
         </div>
       </div>
       <div class="col-sm">
@@ -49,8 +52,9 @@
           <p>{{ finishedTask.task }}</p>
           <span v-if="!finishedTask.closed">
             <button class="btn btn-danger" @click="moveTask(finished, validating, index)">←</button>
-            <button class="btn btn-danger ml-5" @click="finishTask(index)">Close task</button>
+            <button class="btn btn-success ml-5" @click="finishTask(index)">Close task</button>
           </span>
+          <button class="btn btn-danger ml-5" @click="deleteTask(index, finished)">Delete</button>
         </div>
       </div>
     </div>
@@ -79,11 +83,20 @@ export default {
     moveTask (from, to, index) {
       if (!from[index].closed) {
         to.push(from[index])
-        from.splice(index, 1)
+        this.deleteTask(index, from)
       }
+    },
+    deleteTask (index, list) {
+      list.splice(index, 1)
     },
     finishTask (index) {
       this.finished[index].closed = true
+    },
+    cleanBoard () {
+      this.todo = []
+      this.inProgress = []
+      this.validating = []
+      this.finished = []
     }
   }
 }
