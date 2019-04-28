@@ -58,6 +58,12 @@
         </div>
       </div>
     </div>
+    <h2>Completed tasks - <span id="hoursSpan">{{ totalHours }}</span> hours in total</h2>
+    <div v-for="(finishedTask, index) in finished" :key="index" >
+      <div v-if="finishedTask.closed" class="alert alert-success">
+        <p>{{ index + 1 }}. Name: {{ finishedTask.task }} || Hours: {{ finishedTask.hours }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,7 +82,8 @@ export default {
     addTask () {
       this.todo.push({
         task: this.task,
-        closed: false
+        closed: false,
+        hours: 0
       })
       this.task = ''
     },
@@ -90,6 +97,8 @@ export default {
       list.splice(index, 1)
     },
     finishTask (index) {
+      let hours = parseInt(prompt('Hours: '))
+      this.finished[index].hours = hours
       this.finished[index].closed = true
     },
     cleanBoard () {
@@ -98,12 +107,23 @@ export default {
       this.validating = []
       this.finished = []
     }
+  },
+  computed: {
+    totalHours () {
+      let sum = 0
+
+      for (let i in this.finished) {
+        sum += this.finished[i].hours
+      }
+
+      return sum
+    }
   }
 }
 </script>
 
 <style scoped>
-h1,h3{
+h1,h2,h3{
   color:navy;
 }
 form{

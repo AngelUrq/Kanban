@@ -25,7 +25,20 @@ describe('Board.vue', () => {
 
     expect(taskNames).to.not.include(testTask)
   })
-  it('moved task in no longer in the list ', () => {
+  it('correct sum of hours', () => {
+    for (let i = 0; i < 3; i++) {
+      wrapper.vm.task = 'task' + i
+
+      wrapper.vm.addTask()
+      wrapper.vm.moveTask(wrapper.vm.todo, wrapper.vm.finished, 0)
+
+      wrapper.vm.finished[i].closed = true
+      wrapper.vm.finished[i].hours = 3 * (i + 1)
+    }
+
+    expect(wrapper.find('#hoursSpan').text()).to.equal('18')
+  })
+  it('moved task in no longer in the list', () => {
     wrapper.vm.moveTask(wrapper.vm.todo, wrapper.vm.inProgress, 0)
 
     let todoTaskNames = wrapper.vm.todo.map(task => task.task)
