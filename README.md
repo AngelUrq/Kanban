@@ -1,4 +1,5 @@
 # kanban
+Kanban board in vue.js
 
 ## Project setup
 ```
